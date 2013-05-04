@@ -814,7 +814,7 @@ class Base_Model extends MY_Model {
          }
          else
          {
-             if ($this->_mongodb && preg_match("%/./%", $params[1]))
+             if ($this->_mongodb && preg_match('/^\/.*\/[a-z]*$/', $params[1]))
              {
                  $params[1] = new MongoRegex($params[1]);
              }
