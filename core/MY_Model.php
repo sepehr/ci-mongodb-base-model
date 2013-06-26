@@ -910,10 +910,16 @@ class Base_Model extends MY_Model {
         if ($multiple)
         {
             // Typecast each element in the results array
-            foreach ($results as &$result)
-            {
+            //for MongoDb
+            if($this -> _mongodb){
+                foreach ($results as &$result)
+                 {
                 $this->_typecast($result);
+                }
+        }else{
+             $results = $results->{$this->_return_type($multiple)}();
             }
+            
         }
         // Single value to typecast
         else
