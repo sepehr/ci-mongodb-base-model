@@ -989,11 +989,15 @@ class Base_Model extends MY_Model {
         foreach ($fields as $key => $value)
         {
             // Null-byte injection?
-            if (!isset($this->_fields[$key]))
-            {
-                unset($fields[$key]);
+            $keys = explode('.', $key);
+            $tmp = $this->_fields;
+            foreach ($keys as $key) {
+                if (!array_key_exists($key, $tmp)) {
+                    unset($fields[reset($keys)]);
+                    break;
+                }
+                $tmp = $tmp[$key];
             }
-
             // SQL-like injection?
             // else
             // {
