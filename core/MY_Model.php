@@ -734,7 +734,7 @@ class Base_Model extends MY_Model {
         {
             foreach ($this->$name as $method)
             {
-                $data = call_user_func_array(array($this, $method), $params);
+                $data = call_user_func_array(array($this, $method), array($data));
             }
         }
 
@@ -756,7 +756,7 @@ class Base_Model extends MY_Model {
         {
             foreach ($this->$name as $method)
             {
-                $data = call_user_func_array(array($this, $method), $params);
+                $data = call_user_func_array(array($this, $method), array($data));
             }
         }
 
