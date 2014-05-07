@@ -575,7 +575,7 @@ class Base_Model extends MY_Model {
     public function count_by()
     {
         $where = func_get_args();
-        $this->_set_where($where);
+//        $this->_set_where($where);
 
         return $this->_count($where);
     }
@@ -855,7 +855,7 @@ class Base_Model extends MY_Model {
         }
 
         $count = $this->_mongodb
-            ? count($this->mongo_db->get($this->_datasource))
+            ? $this->mongo_db->count($this->_datasource)
             : $this->db->$method($this->_datasource);
 
         // Restore MongoDB buffered conditions
