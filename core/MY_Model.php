@@ -455,7 +455,7 @@ class Base_Model extends MY_Model {
         {
             $result = $this->{$this->_interface}
                 ->set($data)
-                ->update($this->_datasource);
+                ->update_all($this->_datasource);
         }
 
         // Run registered callbacks
