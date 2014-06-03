@@ -387,7 +387,7 @@ class Base_Model extends MY_Model {
                 $result = $this->{$this->_interface}
                     ->where_in($this->primary_key, $this->_prep_primary($primary_values))
                     ->set($data)
-                    ->update($this->_datasource);
+                    ->update_all($this->_datasource);
             }
 
             // Run registered callbacks
