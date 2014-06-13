@@ -387,7 +387,7 @@ class Base_Model extends MY_Model {
                 $result = $this->{$this->_interface}
                     ->where_in($this->primary_key, $this->_prep_primary($primary_values))
                     ->set($data)
-                    ->update($this->_datasource);
+                    ->update_all($this->_datasource);
             }
 
             // Run registered callbacks
@@ -455,7 +455,7 @@ class Base_Model extends MY_Model {
         {
             $result = $this->{$this->_interface}
                 ->set($data)
-                ->update($this->_datasource);
+                ->update_all($this->_datasource);
         }
 
         // Run registered callbacks
@@ -575,7 +575,7 @@ class Base_Model extends MY_Model {
     public function count_by()
     {
         $where = func_get_args();
-        $this->_set_where($where);
+//        $this->_set_where($where);
 
         return $this->_count($where);
     }
@@ -734,7 +734,7 @@ class Base_Model extends MY_Model {
         {
             foreach ($this->$name as $method)
             {
-                $data = call_user_func_array(array($this, $method), $params);
+                $data = call_user_func_array(array($this, $method), array($data));
             }
         }
 
@@ -756,7 +756,7 @@ class Base_Model extends MY_Model {
         {
             foreach ($this->$name as $method)
             {
-                $data = call_user_func_array(array($this, $method), $params);
+                $data = call_user_func_array(array($this, $method), array($data));
             }
         }
 
@@ -855,7 +855,7 @@ class Base_Model extends MY_Model {
         }
 
         $count = $this->_mongodb
-            ? count($this->mongo_db->get($this->_datasource))
+            ? $this->mongo_db->count($this->_datasource)
             : $this->db->$method($this->_datasource);
 
         // Restore MongoDB buffered conditions
@@ -989,11 +989,15 @@ class Base_Model extends MY_Model {
         foreach ($fields as $key => $value)
         {
             // Null-byte injection?
-            if (!isset($this->_fields[$key]))
-            {
-                unset($fields[$key]);
+            $keys = explode('.', $key);
+            $tmp = $this->_fields;
+            foreach ($keys as $key) {
+                if (!array_key_exists($key, $tmp)) {
+                    unset($fields[reset($keys)]);
+                    break;
+                }
+                $tmp = $tmp[$key];
             }
-
             // SQL-like injection?
             // else
             // {
